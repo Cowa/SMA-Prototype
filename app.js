@@ -20,9 +20,45 @@ app.get('/', function(req, res) {
 
 io.sockets.on('connection', function(socket) {
     socket.on('new_connected', function(message) {
-       console.log(message);
-       socket.emit('connected', 'you are connected');
+	   joinRoom(socket);
     });
 });
 
 server.listen(1337);
+
+/***************
+ ** FUNCTIONS ** 
+ ***************/
+
+// Join a room which has less than 2 clients
+function joinRoom(socket) {
+	
+	var i     = 0,
+		found = false,
+	    room  = 'moor';
+	
+	// Join an existing room (with a client already)
+	for (var key in io.sockets.manager.rooms) {
+		if (key != "") {
+			console.log(io.sockets.clients(key.substring(1)).length);
+			if (io.sockets.clients(key.substring(1)).length < 2) {
+				found = true;
+				room = key.substring(1);
+			}
+		}
+	}
+	
+	// Join a fresh room
+	if (!found) {
+		while (roomExists('room' + i)) i++;
+		room = 'room' + i;
+	}
+	
+	socket.join(room);
+	console.log('Client entering ' + room);
+}
+
+// Check if a room exists
+function roomExists(room) {
+	return (typeof io.sockets.manager.rooms['/' + room] != 'undefined');
+}

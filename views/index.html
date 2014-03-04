@@ -10,10 +10,6 @@
         <script>
             var socket = io.connect('http://localhost:1337');
             socket.emit('new_connected', 'Hello World !');
-            
-            socket.on('connected', function(message) {
-                alert('Message from server: ' + message);
-            });
         </script>
     </body>
 </html>
