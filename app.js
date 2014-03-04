@@ -1,0 +1,13 @@
+var express = require('express');
+
+var app = express();
+
+app.get('/', function(req, res) {
+    res.sendfile(__dirname + '/views/index.html');
+})
+.use(function(req, res, next) {
+    res.setHeader('Content-Type', 'text/plain');
+    res.send(404, 'Page not found');
+});
+
+app.listen(1337);
