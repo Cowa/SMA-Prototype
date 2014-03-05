@@ -35,11 +35,16 @@ io.sockets.on('connection', function(socket) {
     socket.on('new', function(message) {
 		socket.leave('home');
 		joinRoom(socket);
-		updateNbSharingClient(socket);
+		updateNbSharingClient();
     });
 	
 	socket.on('disconnect', function(message) {
-		updateNbSharingClient(socket);
+		if (wasInRoom(socket)) {
+			var room = getRoom(socket);
+			socket.leave(room);
+			updateNbSharingClient();
+			updateRoomState(room);
+		}
 	});
 	
 	socket.on('home', function(message) {
@@ -55,9 +60,9 @@ server.listen(1337);
  ***************/
  
 // Tell clients at Home the number of people sharing
- function updateNbSharingClient(socket) {
-	socket.broadcast.to('home').emit('nb', numberOfClient());
- }
+function updateNbSharingClient() {
+	io.sockets.in('home').emit('nb', numberOfClient());
+}
  
 // Join a room which has less than 2 clients
 function joinRoom(socket) {
@@ -84,6 +89,8 @@ function joinRoom(socket) {
 	
 	socket.join(room);
 	console.log('Client entering ' + room);
+	
+	updateRoomState(room, socket);
 }
 
 // Check if a room exists
@@ -102,4 +109,43 @@ function numberOfClient() {
 	}
 	
 	return n;
+}
+
+// Send the state of a room to clients from it (-1: error, 0: alone, 1: ok)
+function updateRoomState(room, socket) {
+	
+	var msg = -1;
+	
+	if      (io.sockets.clients(room).length <= 1) msg = 0;
+	else if (io.sockets.clients(room).length == 2) msg = 1;
+	
+	io.sockets.in(room).emit('room_state', msg)
+}
+
+// Check if a client was in a room (and not in home)
+function wasInRoom(socket) {
+	
+	var inRoom = false;
+	
+	for(var key in io.sockets.manager.roomClients[socket.id]) {
+		if (key != "/home" && key != "")
+			inRoom = true;
+	}
+	
+	return inRoom;
+}
+
+// Return the socket's room name
+function getRoom(socket) {
+
+	var room = "";
+	
+	for(var key in io.sockets.manager.roomClients[socket.id]) {
+		if (key != "/home" && key != "")
+			room = key.substring(1);
+	}
+	
+	console.log(room);
+	
+	return room;
 }
