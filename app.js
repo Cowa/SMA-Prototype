@@ -8,9 +8,16 @@ var app     = express(),
 
 // Get handler
 
-app.get('/', function(req, res) {
+app.use("/css", express.static(__dirname + '/views/css'))
+
+.get('/', function(req, res) {
     res.sendfile(__dirname + '/views/index.html');
 })
+
+.get('/share', function(req, res) {
+	res.sendfile(__dirname + '/views/share.html');
+})
+
 .use(function(req, res, next) {
     res.setHeader('Content-Type', 'text/plain');
     res.send(404, 'Page not found');
@@ -19,7 +26,7 @@ app.get('/', function(req, res) {
 // Sockets handler
 
 io.sockets.on('connection', function(socket) {
-    socket.on('new_connected', function(message) {
+    socket.on('new', function(message) {
 	   joinRoom(socket);
     });
 });
