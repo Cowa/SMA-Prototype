@@ -8,7 +8,8 @@ var app     = express(),
 
 // Get handler
 
-app.use("/css", express.static(__dirname + '/views/css'))
+app.use('/css', express.static(__dirname + '/views/css'))
+   .use('/js' , express.static(__dirname + '/views/js'))
 
 .get('/', function(req, res) {
     res.sendfile(__dirname + '/views/index.html');
