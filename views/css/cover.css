@@ -113,3 +113,7 @@ body {
     width: 700px;
   }
 }
+.form-control {
+	width: 50%;
+	margin: auto;
+}

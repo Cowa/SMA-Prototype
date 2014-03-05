@@ -11,10 +11,10 @@ var app     = express(),
  *****************/
 
 app.use('/css', express.static(__dirname + '/views/css'))
-   .use('/js' , express.static(__dirname + '/views/js'))
+.use('/js' , express.static(__dirname + '/views/js'))
 
 .get('/', function(req, res) {
-    res.sendfile(__dirname + '/views/index.html');
+	res.sendfile(__dirname + '/views/index.html');
 })
 
 .get('/share', function(req, res) {
@@ -22,8 +22,8 @@ app.use('/css', express.static(__dirname + '/views/css'))
 })
 
 .use(function(req, res, next) {
-    res.setHeader('Content-Type', 'text/plain');
-    res.send(404, 'Page not found');
+	res.setHeader('Content-Type', 'text/plain');
+	res.send(404, 'Page not found');
 });
 
 /*********************
@@ -32,24 +32,34 @@ app.use('/css', express.static(__dirname + '/views/css'))
 
 io.sockets.on('connection', function(socket) {
 
-    socket.on('new', function(message) {
-		socket.leave('home');
-		joinRoom(socket);
-		updateNbSharingClient();
-    });
-	
+	// Client disconnects
 	socket.on('disconnect', function(message) {
 		if (wasInRoom(socket)) {
 			var room = getRoom(socket);
 			socket.leave(room);
 			updateNbSharingClient();
 			updateRoomState(room);
+			
+			socket.broadcast.to(room).emit('clear_room', message);
 		}
 	});
 	
+	// Client wants to share
+    socket.on('new', function(message) {
+		socket.leave('home');
+		joinRoom(socket);
+		updateNbSharingClient();
+    });
+	
+	// Client arrives on home page
 	socket.on('home', function(message) {
 		socket.join('home');
 		socket.emit('nb', numberOfClient());
+	});
+	
+	// Client sends something
+	socket.on('send_message', function(message) {
+		socket.broadcast.to(getRoom(socket)).emit('receive_message', message);
 	});
 });
 

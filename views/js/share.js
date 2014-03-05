@@ -6,12 +6,36 @@ socket.emit('new', 'Share.');
 
 socket.on('room_state', function(msg) {
 	
-	var data  = "Error",
- 	    under = "Error";
+	if (msg == 0) {
+		$('#state').text('You are alone, please wait.').show();
+		$('#under_state').text('Don\'t worry, someone will soon be connected (hopefully).').show();
+		$('#share_box').hide();
+	} else if (msg == 1) {
+		$('#state').hide();
+		$('#under_state').hide();
+		$('#share_box').show();
+	} else {
+		$('#state').text('Error.').show();
+		$('#under_state').text('Error.').show();
+	}
+});
+
+socket.on('receive_message', function(message) {
+	$('#share_box_content').append('<p>Not me: '+ message +'</p>');
+});
+
+socket.on('clear_room', function() {
+	$('#share_box_content').empty();
+});
+
+$('#share_form').submit(function() {
+
+	var message = $('#to_share').val();
 	
-	if (msg == 0) data = "You are alone, please wait.", under = "Don't worry, someone will soon be connected (hopefully).";
-	else if (msg == 1) data = "You are connected with someone.", under = "Yeah, time to share.";
+	socket.emit('send_message', message);
 	
-	$('#state').text(data);
-	$('#under_state').text(under);
+	$('#to_share').val('').focus();
+	$('#share_box_content').append('<p>Me: '+ message +'</p>');
+	
+	return false;
 });
