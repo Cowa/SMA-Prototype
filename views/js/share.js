@@ -1,5 +1,5 @@
 // Socket connection to server
-var socket = io.connect('http://localhost:1337');
+var socket = io.connect('192.168.0.34:1337');
 
 // Tell server we wanna share
 socket.emit('new', 'Share.');
@@ -28,7 +28,7 @@ socket.on('clear_room', function() {
 	$('#share_box_content').empty();
 });
 
-$('#share_form').submit(function() {
+function share() {
 
 	var message = $('#to_share').val();
 	
@@ -36,6 +36,10 @@ $('#share_form').submit(function() {
 	
 	$('#to_share').val('').focus();
 	$('#share_box_content').append('<p>Me: '+ message +'</p>');
-	
-	return false;
+}
+
+$('#share_form').submit(function () {
+
+    share();
+    return false;
 });

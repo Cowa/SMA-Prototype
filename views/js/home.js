@@ -1,5 +1,5 @@
 // Socket connection to server
-var socket = io.connect('http://localhost:1337');
+var socket = io.connect('192.168.0.34:1337');
 
 // Tell server we're on home
 socket.emit('home', 'Hi.');
