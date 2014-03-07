@@ -12,12 +12,22 @@ socket.on('room_state', function(msg) {
 		$('#share_box').hide();
 	} else if (msg == 1) {
 		$('#state').hide();
-		$('#under_state').hide();
+		$('#under_state').text('You are in touch with someone.').show();
 		$('#share_box').show();
 	} else {
 		$('#state').text('Error.').show();
 		$('#under_state').text('Error.').show();
 	}
+});
+
+socket.on('role', function(role) {
+	
+	var message = 'clockwork';
+	
+	if(role == 'sender')        message = 'Your turn to share.';
+	else if(role == 'receiver') message = 'Please wait the share.';
+	
+	$('#role').text(message);
 });
 
 socket.on('receive_message', function(message) {
