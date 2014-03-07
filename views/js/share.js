@@ -41,5 +41,5 @@ function share() {
 $('#share_form').submit(function () {
 
     share();
-    return false;
+    return false; // avoid page reloading
 });

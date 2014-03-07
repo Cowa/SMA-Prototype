@@ -154,8 +154,6 @@ function getRoom(socket) {
 		if (key != "/home" && key != "")
 			room = key.substring(1);
 	}
-	
-	console.log(room);
-	
+		
 	return room;
 }
