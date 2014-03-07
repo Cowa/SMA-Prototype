@@ -1,5 +1,6 @@
 {
    "name": "ShareMeAnything",
+   "main": "app.js",
    "version": "0.1.0",
    "author": "Brice Thomas",
    "dependencies": {

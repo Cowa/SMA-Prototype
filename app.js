@@ -11,7 +11,8 @@ var app     = express(),
  *****************/
 
 app.use('/css', express.static(__dirname + '/views/css'))
-.use('/js' , express.static(__dirname + '/views/js'))
+.use('/js', express.static(__dirname + '/views/js'))
+.use('/img', express.static(__dirname + '/views/img'))
 
 .get('/', function(req, res) {
 	res.sendfile(__dirname + '/views/index.html');
