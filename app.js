@@ -47,7 +47,7 @@ io.sockets.on('connection', function(socket) {
 	});
 	
 	// Client wants to share
-    socket.on('new', function(message) {
+    socket.on('new', function() {
 		socket.leave('home');
 		joinRoom(socket);
 		updateNbSharingClient();
@@ -59,9 +59,19 @@ io.sockets.on('connection', function(socket) {
 		socket.emit('nb', numberOfClient());
 	});
 	
-	// Client sends something
+	// Client sender sends something
 	socket.on('send_message', function(message) {
 		socket.broadcast.to(getRoom(socket)).emit('receive_message', message);
+	});
+	
+	// Client receiver says 'Fine' to the share (switch role)
+	socket.on('fine', function() {
+		switchRole(getRoom(socket));
+	});
+	
+	// Client receiver says 'Bad' to the share (end communication)
+	socket.on('bad', function() {
+		
 	});
 });
 
@@ -110,7 +120,7 @@ function joinRoom(socket) {
 	socket.join(room);
 	console.log('Client entering ' + room);
 	
-	updateRoomState(room, socket);
+	updateRoomState(room);
 }
 
 // Check if a room exists
@@ -133,7 +143,7 @@ function numberOfClient() {
 
 // Send the state of a room to clients from it (-1: error, 0: alone, 1: ok)
 // And tell them which role they got ('sender' or 'receiver')
-function updateRoomState(room, socket) {
+function updateRoomState(room) {
 	
 	var msg = -1;
 	
@@ -181,7 +191,9 @@ function switchRole(room) {
 	for(var cl in io.sockets.clients(room)) {
 		io.sockets.clients(room)[cl].get('role', function(err, role) {
 			if(role == 'sender') io.sockets.clients(room)[cl].set('role', 'receiver');
-			else io.sockets.clients(room)[cl].set('role', 'receiver');
+			else io.sockets.clients(room)[cl].set('role', 'sender');
 		});
 	}
+	
+	updateRoomState(room);
 }

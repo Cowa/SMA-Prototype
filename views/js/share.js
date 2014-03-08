@@ -2,7 +2,7 @@
 var socket = io.connect('192.168.0.34:1337');
 
 // Tell server we wanna share
-socket.emit('new', 'Share.');
+socket.emit('new');
 
 socket.on('room_state', function(msg) {
 	
@@ -24,8 +24,17 @@ socket.on('role', function(role) {
 	
 	var message = 'clockwork';
 	
-	if(role == 'sender')        message = 'Your turn to share.';
-	else if(role == 'receiver') message = 'Please wait the share.';
+	if(role == 'sender') {
+		message = 'Your turn to share.';
+		$('#share_form').show();
+		$('#fine').hide();
+		$('#bad').hide();
+	} else if(role == 'receiver') {
+		message = 'Please wait the share.';
+		$('#share_form').hide();
+		$('#fine').text('Fun').show();
+		$('#bad').text('Bad').show();
+	}
 	
 	$('#role').text(message);
 });
@@ -53,3 +62,13 @@ $('#share_form').submit(function () {
     share();
     return false; // avoid page reloading
 });
+
+// When client like the share
+function fine() {
+	socket.emit('fine');
+}
+
+// When client dislike the share
+function bad() {
+	socket.emit('bad');
+}
