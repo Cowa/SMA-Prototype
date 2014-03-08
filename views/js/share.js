@@ -27,34 +27,39 @@ socket.on('role', function(role) {
 	if(role == 'sender') {
 		message = 'Your turn to share.';
 		$('#share_form').show();
-		$('#fine').hide();
-		$('#bad').hide();
 	} else if(role == 'receiver') {
 		message = 'Please wait the share.';
 		$('#share_form').hide();
-		$('#fine').text('Fun').show();
-		$('#bad').text('Bad').show();
 	}
-	
+	$('#vote').hide();
 	$('#role').text(message);
 });
 
 socket.on('receive_message', function(message) {
 	$('#share_box_content').append('<p>Not me: '+ message +'</p>');
+	$('#vote').show();
+	$('#fine').text('Fun');
+	$('#bad').text('Bad');
+	$('#role').text('You got something. How is it ?');
+	$('#under_state').text('Don\'t let the sharer waits too long.').show();
 });
 
 socket.on('clear_room', function() {
 	$('#share_box_content').empty();
 });
 
+// When client shares something
 function share() {
 
 	var message = $('#to_share').val();
 	
 	socket.emit('send_message', message);
 	
+	$('#share_form').hide();
 	$('#to_share').val('').focus();
 	$('#share_box_content').append('<p>Me: '+ message +'</p>');
+	$('#role').text('Well done. Now wait the vote.');
+	$('#under_state').text('It may take a moment depending on the share.').show();
 }
 
 $('#share_form').submit(function () {
@@ -63,7 +68,7 @@ $('#share_form').submit(function () {
     return false; // avoid page reloading
 });
 
-// When client like the share
+// When client likes the share
 function fine() {
 	socket.emit('fine');
 }
