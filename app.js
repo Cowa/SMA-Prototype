@@ -42,7 +42,7 @@ io.sockets.on('connection', function(socket) {
 			updateNbSharingClient();
 			updateRoomState(room);
 			
-			socket.broadcast.to(room).emit('clear_room', message);
+			socket.broadcast.to(room).emit('clear_room');
 		}
 	});
 	
@@ -59,13 +59,24 @@ io.sockets.on('connection', function(socket) {
 		socket.emit('nb', numberOfClient());
 	});
 	
+	/*
 	// Client sender sends something
 	socket.on('send_message', function(message) {
 		socket.broadcast.to(getRoom(socket)).emit('receive_message', message);
 	});
+	*/
+	
+	// Client sender sends image
+	socket.on('send_image', function(image) {
+		socket.broadcast.to(getRoom(socket)).emit('receive_image', image);
+	});
 	
 	// Client receiver says 'Fine' to the share (switch role)
 	socket.on('fine', function() {
+		
+		var room = getRoom(socket);
+		io.sockets.in(room).emit('clear_room');
+		
 		switchRole(getRoom(socket));
 	});
 	
@@ -73,6 +84,8 @@ io.sockets.on('connection', function(socket) {
 	socket.on('bad', function() {
 		var room = getRoom(socket);
 		var roomate = getRoomate(socket, room);
+		
+		io.sockets.in(room).emit('clear_room');
 		
 		socket.leave(room);
 		roomate.leave(room);

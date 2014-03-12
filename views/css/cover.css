@@ -22,10 +22,6 @@ body {
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
   box-shadow: inset 0 0 100px rgba(0,0,0,.5);
 }
-#imagefile {
-  display: none;
-}
-
 .site-wrapper {
   display: table;
   width: 100%;
@@ -120,4 +116,11 @@ body {
 .form-control {
   width: 50%;
   margin: auto;
+}
+#state, #share_box, #tryAgain, #under_state {
+  display: none;
+}
+#share_box_content p img {
+  max-width: 75%;
+  max-height: 75%;
 }

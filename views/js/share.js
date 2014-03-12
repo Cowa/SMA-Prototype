@@ -37,7 +37,7 @@ socket.on('role', function(role) {
 	$('#tryAgain').hide();
 });
 
-socket.on('receive_message', function(message) {
+/*socket.on('receive_message', function(message) {
 
 	$('#share_box_content').append('<p>Not me: '+ message +'</p>');
 	$('#vote').show();
@@ -46,15 +46,27 @@ socket.on('receive_message', function(message) {
 	$('#role').text('You got something. How is it ?');
 	$('#under_state').text('Don\'t let the sharer waits too long.').show();
 	$('#tryAgain').hide();
+});*/
+
+socket.on('receive_image', function(image) {
+
+	$('#vote').show();
+	$('#fine').text('Fun');
+	$('#bad').text('Bad');
+	$('#role').text('You got something. How is it ?');
+	$('#under_state').text('Don\'t let the sharer waits too long.').show();
+	$('#tryAgain').hide();
+
+	show_image(image);
 });
 
 socket.on('clear_room', function() {
-	$('#share_box_content').empty();
+	clear_share();
 });
 
 socket.on('eos', function(message) {
 
-	var state, under_state;
+	var state = 'Error eos.', under_state = 'See below.';
 	
 	if(message == 1) state = 'So... it was bad ?', under_state = 'I\'m sure next time will be way better.';
 	if(message == 0) state = 'Your share was bad.', under_state = 'From the receiver\'s point of view.';
@@ -65,23 +77,44 @@ socket.on('eos', function(message) {
 	$('#tryAgain').show();
 });
 
+// Clear the share
+function clear_share() {
+	$('#share_box_content').empty();
+}
+
 // When client shares something
 function share() {
 
-	var message = $('#to_share').val();
+	//var message = $('#to_share').val();
 	
-	socket.emit('send_message', message);
+	//socket.emit('send_message', message);
 	
 	$('#share_form').hide();
 	$('#to_share').val('').focus();
-	$('#share_box_content').append('<p>Me: '+ message +'</p>');
+	//$('#share_box_content').append('<p>Me: '+ message +'</p>');
 	$('#role').text('Well done. Now wait the vote.');
 	$('#under_state').text('It may take a moment depending on the share.').show();
+}
+
+function show_image(image) {
+	$('#share_box_content').append('<p><a href="'+ image +'"><img src="' + image + '"/></a></p>');
 }
 
 $('#share_form').submit(function () {
     share();
     return false; // avoid page reloading
+});
+
+$('#imagefile').bind('change', function(e){
+
+      var data = e.originalEvent.target.files[0];
+      var reader = new FileReader();
+      reader.onload = function(evt) {
+		  show_image(evt.target.result);
+		  socket.emit('send_image', evt.target.result);
+		  share();
+      };
+      reader.readAsDataURL(data);
 });
 
 // When client likes the share
