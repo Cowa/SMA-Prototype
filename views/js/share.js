@@ -97,7 +97,8 @@ function share() {
 }
 
 function show_image(image) {
-	$('#share_box_content').append('<p><a href="'+ image +'"><img src="' + image + '"/></a></p>');
+	$('#share_box_content').append('<a href="'+ image +'"><img src="' + image + '"/></a>');
+	$('#share_box_content > a').fancybox();
 }
 
 $('#share_form').submit(function () {

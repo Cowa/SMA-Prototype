@@ -113,14 +113,14 @@ body {
     width: 700px;
   }
 }
-.form-control {
-  width: 50%;
+.form-control, #imagefile{
+  width: auto;
   margin: auto;
 }
 #state, #share_box, #tryAgain, #under_state {
   display: none;
 }
-#share_box_content p img {
+#share_box_content a img {
   max-width: 75%;
   max-height: 75%;
 }

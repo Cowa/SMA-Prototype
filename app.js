@@ -13,6 +13,7 @@ var app     = express(),
 app.use('/css', express.static(__dirname + '/views/css'))
 .use('/js', express.static(__dirname + '/views/js'))
 .use('/img', express.static(__dirname + '/views/img'))
+.use('/fancybox', express.static(__dirname + '/views/js/vendors/fancybox'))
 
 .get('/', function(req, res) {
 	res.sendfile(__dirname + '/views/index.html');
