@@ -18,6 +18,7 @@ socket.on('room_state', function(msg) {
 		$('#state').text('Error.').show();
 		$('#under_state').text('Error.').show();
 	}
+	$('#tryAgain').hide();
 });
 
 socket.on('role', function(role) {
@@ -33,19 +34,35 @@ socket.on('role', function(role) {
 	}
 	$('#vote').hide();
 	$('#role').text(message);
+	$('#tryAgain').hide();
 });
 
 socket.on('receive_message', function(message) {
+
 	$('#share_box_content').append('<p>Not me: '+ message +'</p>');
 	$('#vote').show();
 	$('#fine').text('Fun');
 	$('#bad').text('Bad');
 	$('#role').text('You got something. How is it ?');
 	$('#under_state').text('Don\'t let the sharer waits too long.').show();
+	$('#tryAgain').hide();
 });
 
 socket.on('clear_room', function() {
 	$('#share_box_content').empty();
+});
+
+socket.on('eos', function(message) {
+
+	var state, under_state;
+	
+	if(message == 1) state = 'So... it was bad ?', under_state = 'I\'m sure next time will be way better.';
+	if(message == 0) state = 'Your share was bad.', under_state = 'From the receiver\'s point of view.';
+	
+	$('#state').text(state).show();
+	$('#under_state').text(under_state).show();
+	$('#share_box').hide();
+	$('#tryAgain').show();
 });
 
 // When client shares something
@@ -63,7 +80,6 @@ function share() {
 }
 
 $('#share_form').submit(function () {
-
     share();
     return false; // avoid page reloading
 });

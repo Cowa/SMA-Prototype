@@ -54,7 +54,7 @@ io.sockets.on('connection', function(socket) {
     });
 	
 	// Client arrives on home page
-	socket.on('home', function(message) {
+	socket.on('home', function() {
 		socket.join('home');
 		socket.emit('nb', numberOfClient());
 	});
@@ -71,7 +71,16 @@ io.sockets.on('connection', function(socket) {
 	
 	// Client receiver says 'Bad' to the share (end communication)
 	socket.on('bad', function() {
+		var room = getRoom(socket);
+		var roomate = getRoomate(socket, room);
 		
+		socket.leave(room);
+		roomate.leave(room);
+		updateNbSharingClient();
+		
+		// end of stream, 1 for the client who clicked 'bad', 0 for the other
+		socket.emit('eos', '1');
+		roomate.emit('eos', '0');
 	});
 });
 
@@ -196,4 +205,16 @@ function switchRole(room) {
 	}
 	
 	updateRoomState(room);
+}
+
+function getRoomate(socket, room) {
+
+	var roomate;
+
+	for(var cl in io.sockets.clients(room)) {
+		if (socket != io.sockets.clients(room)[cl])
+			roomate = io.sockets.clients(room)[cl];
+	}
+	
+	return roomate;
 }
