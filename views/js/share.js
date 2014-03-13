@@ -1,9 +1,18 @@
+/**************
+ * CONNECTION *
+ **************/
+ 
 // Socket connection to server
 var socket = io.connect('192.168.0.34:1337');
 
 // Tell server we wanna share
 socket.emit('new');
 
+/*********************
+ * SOCKET 'ON' EVENT *
+ *********************/
+
+// When client gets room' state
 socket.on('room_state', function(msg) {
 	
 	if (msg == 0) {
@@ -21,6 +30,7 @@ socket.on('room_state', function(msg) {
 	$('#tryAgain').hide();
 });
 
+// When client gets his role (sender or receiver)
 socket.on('role', function(role) {
 	
 	var message = 'clockwork';
@@ -37,17 +47,7 @@ socket.on('role', function(role) {
 	$('#tryAgain').hide();
 });
 
-/*socket.on('receive_message', function(message) {
-
-	$('#share_box_content').append('<p>Not me: '+ message +'</p>');
-	$('#vote').show();
-	$('#fine').text('Fun');
-	$('#bad').text('Bad');
-	$('#role').text('You got something. How is it ?');
-	$('#under_state').text('Don\'t let the sharer waits too long.').show();
-	$('#tryAgain').hide();
-});*/
-
+// When client (the receiver) receives an image
 socket.on('receive_image', function(image) {
 
 	$('#vote').show();
@@ -60,22 +60,28 @@ socket.on('receive_image', function(image) {
 	show_image(image);
 });
 
+// Remove share box content
 socket.on('clear_room', function() {
 	clear_share();
 });
 
+// When End Of Stream occured, the receiver puts an end by voting 'Bad'
 socket.on('eos', function(message) {
 
 	var state = 'Error eos.', under_state = 'See below.';
 	
-	if(message == 1) state = 'So... it was bad ?', under_state = 'I\'m sure next time will be way better.';
-	if(message == 0) state = 'Your share was bad.', under_state = 'From the receiver\'s point of view.';
+	if(message == 1) state = 'So... it was bad ?', under_state = 'Oh. You were right. It was bad.';
+	if(message == 0) state = 'Your share was bad.', under_state = 'Don\'t be sad. Life is unfair.';
 	
 	$('#state').text(state).show();
 	$('#under_state').text(under_state).show();
 	$('#share_box').hide();
 	$('#tryAgain').show();
 });
+
+/*************
+ * FUNCTIONS *
+ *************/
 
 // Clear the share
 function clear_share() {
@@ -85,38 +91,18 @@ function clear_share() {
 // When client shares something
 function share() {
 
-	//var message = $('#to_share').val();
-	
-	//socket.emit('send_message', message);
-	
 	$('#share_form').hide();
 	$('#to_share').val('').focus();
-	//$('#share_box_content').append('<p>Me: '+ message +'</p>');
 	$('#role').text('Well done. Now wait the vote.');
 	$('#under_state').text('It may take a moment depending on the share.').show();
 }
 
+// Display the shared image in the share box content
 function show_image(image) {
+
 	$('#share_box_content').append('<a href="'+ image +'"><img src="' + image + '"/></a>');
 	$('#share_box_content > a').fancybox();
 }
-
-$('#share_form').submit(function () {
-    share();
-    return false; // avoid page reloading
-});
-
-$('#imagefile').bind('change', function(e){
-
-      var data = e.originalEvent.target.files[0];
-      var reader = new FileReader();
-      reader.onload = function(evt) {
-		  show_image(evt.target.result);
-		  socket.emit('send_image', evt.target.result);
-		  share();
-      };
-      reader.readAsDataURL(data);
-});
 
 // When client likes the share
 function fine() {
@@ -127,3 +113,25 @@ function fine() {
 function bad() {
 	socket.emit('bad');
 }
+
+/***************
+ * DOM SECTION *
+ ***************/
+
+$('#share_form').submit(function () {
+    return false; // avoid page reloading
+});
+
+$('#imagefile').on('change', function(e) {
+
+	console.log('test');
+    var data = e.originalEvent.target.files[0];
+	console.log(data);
+	var reader = new FileReader();
+    reader.onload = function(evt) {
+		show_image(evt.target.result);
+		socket.emit('send_image', evt.target.result);
+		share();
+    };
+    reader.readAsDataURL(data);
+});

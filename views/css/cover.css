@@ -121,6 +121,6 @@ body {
   display: none;
 }
 #share_box_content a img {
-  max-width: 75%;
-  max-height: 75%;
+  max-width: 450px;
+  max-height: 300px;
 }

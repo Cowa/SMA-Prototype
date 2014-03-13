@@ -14,6 +14,7 @@ app.use('/css', express.static(__dirname + '/views/css'))
 .use('/js', express.static(__dirname + '/views/js'))
 .use('/img', express.static(__dirname + '/views/img'))
 .use('/fancybox', express.static(__dirname + '/views/js/vendors/fancybox'))
+.use('/bootstrap', express.static(__dirname + '/views/js/vendors/bootstrap'))
 
 .get('/', function(req, res) {
 	res.sendfile(__dirname + '/views/index.html');
@@ -59,13 +60,6 @@ io.sockets.on('connection', function(socket) {
 		socket.join('home');
 		socket.emit('nb', numberOfClient());
 	});
-	
-	/*
-	// Client sender sends something
-	socket.on('send_message', function(message) {
-		socket.broadcast.to(getRoom(socket)).emit('receive_message', message);
-	});
-	*/
 	
 	// Client sender sends image
 	socket.on('send_image', function(image) {

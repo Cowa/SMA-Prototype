@@ -25,28 +25,42 @@
           </div>
           <div class="inner cover">
             <p class="lead">
+				<!-- State -->
 				<span id="state"></span>
 			</p>
 			
+			<!-- SHARE BOX -->
 			<div id="share_box">
 				<h1 id="role" class="cover-heading"></h1>
+				
+				<!-- Share box content -->
 				<div id="share_box_content"></div>
+				
+				<!--  Share form -->
 				<form id="share_form">
+				
 					<div class="form-group">
-						<!-- <input type="text" id="to_share" class="form-control" /> -->
-						<div class="filebutton btn btn-lg btn-default">Share image<input type="file" id="imagefile" accept="image/*"></div>
+						<input type="file" id="imagefile" accept="image/*" style="display:none">
+						<button class="btn btn-lg btn-default" onclick="$('input[id=imagefile]').click();">Share image</button>	
 					</div>
+					
 				</form>
+				
 				<br />
+				<!-- Vote buttons -->
 				<div id="vote">
 					<button id="fine" class="btn btn-success btn-lg" onclick="fine()"></button>
 					<button id="bad" class="btn btn-danger btn-lg" onclick="bad()"></button>
 				</div>
+				
 			</div>
 			
+			<!-- Try again button -->
             <a id="tryAgain" href="share" class="btn btn-lg btn-default">Find someone else !</a>
 			
-			<br />
+			<br /><br />
+			
+			<!-- Under state -->
 			<small id="under_state"></small>
           </div>
           <div class="mastfoot">
