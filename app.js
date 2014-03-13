@@ -4,7 +4,8 @@ var express = require('express'),
 
 var app     = express(),
     server  = http.createServer(app),
-    io      = sio.listen(server);
+    io      = sio.listen(server),
+	port    = 1337;
 
 /*****************
  ** GET HANDLER **
@@ -63,10 +64,19 @@ io.sockets.on('connection', function(socket) {
 	
 	// Client sender sends image
 	socket.on('send_image', function(image) {
-		socket.broadcast.to(getRoom(socket)).emit('receive_image', image);
+	
+		var room = getRoom(socket);
+		
+		if(isSender(socket)) {
+			socket.broadcast.to(room).emit('receive_image', image);
+		} else { // cheating is bad, m'kay ?
+			socket.leave(room);
+			updateNbSharingClient();
+			updateRoomState(room);
+		}
 	});
 	
-	// Client receiver says 'Fine' to the share (switch role)
+	// Client receiver says 'Fun' to the share (switch role)
 	socket.on('fine', function() {
 		
 		var room = getRoom(socket);
@@ -92,7 +102,7 @@ io.sockets.on('connection', function(socket) {
 	});
 });
 
-server.listen(1337);
+server.listen(port);
 
 /***************
  ** FUNCTIONS ** 
@@ -102,7 +112,22 @@ server.listen(1337);
 function updateNbSharingClient() {
 	io.sockets.in('home').emit('nb', numberOfClient());
 }
- 
+
+// Check if the socket is the sender
+function isSender(socket) {
+	
+	var room = getRoom(socket),
+		rtrn = false;
+	
+	for(var cl in io.sockets.clients(room)) {
+		io.sockets.clients(room)[cl].get('role', function(err, role) {
+			if(role == 'sender' && io.sockets.clients(room)[cl] == socket) rtrn = true;
+		});
+	}
+	
+	return rtrn;
+}
+
 // Join a room which has less than 2 clients & set role
 function joinRoom(socket) {
 	
@@ -192,7 +217,7 @@ function wasInRoom(socket) {
 // Return the socket's room name
 function getRoom(socket) {
 
-	var room = "";
+	var room = "room 237";
 	
 	for(var key in io.sockets.manager.roomClients[socket.id]) {
 		if (key != "/home" && key != "")
@@ -215,6 +240,7 @@ function switchRole(room) {
 	updateRoomState(room);
 }
 
+// Get the room-mate of a socket from a room
 function getRoomate(socket, room) {
 
 	var roomate;

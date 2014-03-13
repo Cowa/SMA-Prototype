@@ -1,6 +1,6 @@
-/**************
- * CONNECTION *
- **************/
+/****************
+ ** CONNECTION **
+ ****************/
  
 // Socket connection to server
 var socket = io.connect('192.168.0.34:1337');
@@ -8,9 +8,9 @@ var socket = io.connect('192.168.0.34:1337');
 // Tell server we wanna share
 socket.emit('new');
 
-/*********************
- * SOCKET 'ON' EVENT *
- *********************/
+/***********************
+ ** SOCKET 'ON' EVENT **
+ ***********************/
 
 // When client gets room' state
 socket.on('room_state', function(msg) {
@@ -79,9 +79,9 @@ socket.on('eos', function(message) {
 	$('#tryAgain').show();
 });
 
-/*************
- * FUNCTIONS *
- *************/
+/***************
+ ** FUNCTIONS **
+ ***************/
 
 // Clear the share
 function clear_share() {
@@ -114,9 +114,9 @@ function bad() {
 	socket.emit('bad');
 }
 
-/***************
- * DOM SECTION *
- ***************/
+/*****************
+ ** DOM SECTION **
+ *****************/
 
 $('#share_form').submit(function () {
     return false; // avoid page reloading
