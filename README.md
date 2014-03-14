@@ -4,3 +4,56 @@ Share Me Anything
 *A web application social experiment*
 
 Project by Brice Thomas written in JavaScript with Node.js, 2014
+
+What is it ?
+------------
+
+** A fun new way to communicate **
+
+*Share Me Anything* connects you with another **random** human connected.
+
+Once in touch with someone, two different roles are given: a sender and a receiver.
+
+The sender have to share an image, photo, music or video. Only one share at a time.
+
+Then the receiver receives the share and must vote: *'Fun'* or *'Bad'*.
+
+If it's *'Bad'*, it puts an end to the communication.
+
+But if it's *'Fun'*, the communication goes on ! And roles are switched.
+
+The sender becomes the receiver and the receiver becomes the sender.
+
+And another turn begin...
+
+Progress
+--------
+
+Still in **very early development** but it works well (for the moment).
+
+Only uploaded **images/photos and animated gifs** are supported currently.
+
+First, I planned to add a way to share images directly via URL.
+
+Then, I will add the videos sharing, but only from things like YouTube and Vimeo.
+
+Then, musics sharing (videos can make the job too) from platforms like SoundCloud.
+
+A quick look
+------------
+
+Please, don't forget this is a prototype.
+
+![Home](readme/home.png)
+
+![Sender_share](readme/sharer_share.png)
+
+![Sender_wait](readme/sharer_wait.png)
+
+
+![Receiver_wait](readme/receiver_wait.png)
+
+![Receiver_vote](readme/receiver_vote.png)
+
+
+![Bad](readme/bad.png)

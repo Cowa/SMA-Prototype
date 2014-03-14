@@ -124,7 +124,6 @@ $('#share_form').submit(function () {
 
 $('#imagefile').on('change', function(e) {
 
-	console.log('test');
     var data = e.originalEvent.target.files[0];
 	console.log(data);
 	var reader = new FileReader();
