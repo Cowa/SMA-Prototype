@@ -79,6 +79,20 @@ io.sockets.on('connection', function(socket) {
 		}
 	});
 	
+	// Client sender sends video
+	socket.on('send_video', function(video) {
+	
+		var room = getRoom(socket);
+		
+		if(isSender(socket)) {
+			socket.broadcast.to(room).emit('receive_video', video);
+		} else { // cheating is bad, m'kay ?
+			socket.leave(room);
+			updateNbSharingClient();
+			updateRoomState(room);
+		}
+	});
+	
 	// Client receiver says 'Fun' to the share (switch role)
 	socket.on('fine', function() {
 		

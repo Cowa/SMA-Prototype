@@ -60,6 +60,19 @@ socket.on('receive_image', function(image) {
 	show_image(image);
 });
 
+// When client (the receiver) receives a video
+socket.on('receive_video', function(video) {
+
+	$('#vote').show();
+	$('#fine').text('Fun');
+	$('#bad').text('Bad');
+	$('#role').text('You got something. How is it ?');
+	$('#under_state').text('Don\'t let the sharer waits too long.').show();
+	$('#tryAgain').hide();
+
+	show_youtube(video);
+});
+
 // Remove share box content
 socket.on('clear_room', function() {
 	clear_share();
@@ -103,6 +116,11 @@ function show_image(image) {
 	$('#share_box_content > a').fancybox();
 }
 
+// Display the shared YouTube video
+function show_youtube(video) {
+	$('#share_box_content').append('<iframe id="ytplayer" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/'+getYoutubeId(video)+'" frameborder="0" allowfullscreen>');
+}
+
 // When client likes the share
 function fine() {
 	socket.emit('fine');
@@ -123,6 +141,10 @@ function share_any() {
 		socket.emit('send_image', url);
 		share();
 		$('#urlshare').attr('placeholder', 'URL to the share');
+	} else if (isYoutube(url)) {
+		show_youtube(url);
+		socket.emit('send_video', url);
+		share();
 	} else {
 		$('#urlshare').attr('placeholder', 'Invalid URL');
 	}
@@ -132,6 +154,28 @@ function share_any() {
 // Check if the given url is an image
 function isImage(url) {
 	return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+}
+
+function isYoutube(url) {
+	return(url.match(/watch\?v=([a-zA-Z0-9\-_]+)/) != null);
+}
+
+/*
+* Get YouTube ID from various YouTube URL
+* Author: takien
+* URL: http://takien.com
+*/
+function getYoutubeId(url) {
+
+	var id = '';
+	url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+	if (url[2] !== undefined) {
+		id = url[2].split(/[^0-9a-z_]/i);
+		id = id[0];
+	} else {
+		id = url;
+	}
+	return id;
 }
 
 /*****************
@@ -154,3 +198,5 @@ $('#imagefile').on('change', function(e) {
     };
     reader.readAsDataURL(data);
 });
+
+$('#help_share').tooltip();

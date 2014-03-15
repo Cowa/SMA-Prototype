@@ -31,13 +31,17 @@ Progress
 
 Still in **very early development** but it works well (for the moment).
 
-Only uploaded **images/photos and animated gifs** are supported currently.
+Supported shares:
 
-First, I planned to add a way to share images directly via URL.
+- Uploaded & URL **images, photos and animated gifs**
 
-Then, I will add the videos sharing, but only from things like YouTube and Vimeo.
+- **YouTube videos**
 
-Then, musics sharing (videos can make the job too) from platforms like SoundCloud.
+In a near future:
+
+- Vimeo videos
+
+- Musics sharing from SoundCloud
 
 A quick look
 ------------
