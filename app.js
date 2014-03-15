@@ -150,9 +150,9 @@ function isSender(socket) {
 function joinRoom(socket) {
 	
 	var i     = 0,
-		found = false,
-	    room  = 'moor';
-		role  = 'zombi';
+        found = false,
+        room  = 'moor';
+        role  = 'zombi';
 	
 	// Join an existing room (with a client already)
 	for (var key in io.sockets.manager.rooms) {

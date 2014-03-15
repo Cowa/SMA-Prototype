@@ -164,13 +164,15 @@ function isYoutube(url) {
 * Get YouTube ID from various YouTube URL
 * Author: takien
 * URL: http://takien.com
+*
+* Updated by Brice Thomas (id video may now contains '-')
 */
 function getYoutubeId(url) {
 
 	var id = '';
 	url = url.replace(/(>|<)/gi,'').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
 	if (url[2] !== undefined) {
-		id = url[2].split(/[^0-9a-z_]/i);
+		id = url[2].split(/[^0-9a-z_-]/i);
 		id = id[0];
 	} else {
 		id = url;
