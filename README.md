@@ -8,7 +8,7 @@ Project by Brice Thomas written in JavaScript with Node.js, 2014
 What is it ?
 ------------
 
-** A fun new way to communicate **
+**A fun new way to communicate**
 
 *Share Me Anything* connects you with another **random** human connected.
 

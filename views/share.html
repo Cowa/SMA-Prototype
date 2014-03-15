@@ -35,13 +35,16 @@
 				
 				<!-- Share box content -->
 				<div id="share_box_content"></div>
-				
 				<!--  Share form -->
 				<form id="share_form">
 				
 					<div class="form-group">
 						<input type="file" id="imagefile" accept="image/*" style="display:none">
-						<button class="btn btn-lg btn-default" onclick="$('input[id=imagefile]').click();">Share image</button>	
+						<button class="btn btn-default" onclick="$('#imagefile').click();">Share image (upload)</button>
+						<br /><br />
+						<input type="url" id="urlshare" placeholder="URL to the share">
+						<br />
+						<button class="btn btn-default" onclick="share_any()">Share anything</button>
 					</div>
 					
 				</form>

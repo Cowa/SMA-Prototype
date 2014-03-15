@@ -70,8 +70,8 @@ socket.on('eos', function(message) {
 
 	var state = 'Error eos.', under_state = 'See below.';
 	
-	if(message == 1) state = 'So... it was bad ?', under_state = 'Oh. You were right. It was bad.';
-	if(message == 0) state = 'Your share was bad.', under_state = 'Don\'t be sad. Life is unfair.';
+	if(message == 1)      state = 'So... it was bad ?', under_state = 'Oh. You were right. It was bad.';
+	else if(message == 0) state = 'Your share was bad.', under_state = 'Don\'t be sad. Life is unfair.';
 	
 	$('#state').text(state).show();
 	$('#under_state').text(under_state).show();
@@ -92,7 +92,6 @@ function clear_share() {
 function share() {
 
 	$('#share_form').hide();
-	$('#to_share').val('').focus();
 	$('#role').text('Well done. Now wait the vote.');
 	$('#under_state').text('It may take a moment depending on the share.').show();
 }
@@ -112,6 +111,27 @@ function fine() {
 // When client dislike the share
 function bad() {
 	socket.emit('bad');
+}
+
+// Share by URL
+function share_any() {
+	
+	var url = $('#urlshare').val();
+	
+	if (isImage(url)) {
+		show_image(url);
+		socket.emit('send_image', url);
+		share();
+		$('#urlshare').attr('placeholder', 'URL to the share');
+	} else {
+		$('#urlshare').attr('placeholder', 'Invalid URL');
+	}
+	$('#urlshare').val('');
+}
+
+// Check if the given url is an image
+function isImage(url) {
+	return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
 }
 
 /*****************

@@ -10,6 +10,7 @@ a:hover {
   text-shadow: none;
   background-color: #fff;
   border: 1px solid #fff;
+  font-weight: bold;
 }
 html,
 body {
@@ -123,4 +124,8 @@ body {
 #share_box_content a img {
   max-width: 450px;
   max-height: 300px;
+}
+input {
+  color: #51708f;
+  margin-bottom: 2px;
 }

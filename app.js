@@ -5,7 +5,7 @@ var express = require('express'),
 var app     = express(),
     server  = http.createServer(app),
     io      = sio.listen(server),
-	port    = 1337;
+    port    = 1337;
 
 /*****************
  ** GET HANDLER **
@@ -38,6 +38,7 @@ io.sockets.on('connection', function(socket) {
 
 	// Client disconnects
 	socket.on('disconnect', function(message) {
+	
 		if (wasInRoom(socket)) {
 			var room = getRoom(socket);
 			socket.leave(room);
@@ -51,6 +52,7 @@ io.sockets.on('connection', function(socket) {
 	
 	// Client wants to share
     socket.on('new', function() {
+	
 		socket.leave('home');
 		joinRoom(socket);
 		updateNbSharingClient();
@@ -58,6 +60,7 @@ io.sockets.on('connection', function(socket) {
 	
 	// Client arrives on home page
 	socket.on('home', function() {
+	
 		socket.join('home');
 		socket.emit('nb', numberOfClient());
 	});
@@ -87,6 +90,7 @@ io.sockets.on('connection', function(socket) {
 	
 	// Client receiver says 'Bad' to the share (end communication)
 	socket.on('bad', function() {
+	
 		var room = getRoom(socket);
 		var roomate = getRoomate(socket, room);
 		
