@@ -201,4 +201,4 @@ $('#imagefile').on('change', function(e) {
     reader.readAsDataURL(data);
 });
 
-$('#help_share').tooltip();
+$('#urlshare').tooltip();

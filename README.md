@@ -43,6 +43,13 @@ In a near future:
 
 - Musics sharing from SoundCloud
 
+Security
+--------
+
+Currently the application is not at all secured for clients and servers.
+
+Do **NOT** use it on production servers. 
+
 A quick look
 ------------
 

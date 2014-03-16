@@ -51,12 +51,12 @@ io.sockets.on('connection', function(socket) {
 	});
 	
 	// Client wants to share
-    socket.on('new', function() {
+	socket.on('new', function() {
 	
 		socket.leave('home');
 		joinRoom(socket);
 		updateNbSharingClient();
-    });
+	});
 	
 	// Client arrives on home page
 	socket.on('home', function() {
