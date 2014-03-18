@@ -37,11 +37,17 @@ Supported shares:
 
 - **YouTube videos**
 
+- **Vimeo videos**
+
 In a near future:
 
-- Vimeo videos
-
 - Musics sharing from SoundCloud
+
+And then:
+
+- High security
+
+- Code optimization 
 
 Security
 --------
