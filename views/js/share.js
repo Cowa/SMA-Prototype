@@ -1,7 +1,7 @@
 /****************
  ** CONNECTION **
  ****************/
- 
+
 // Socket connection to server
 var socket = io.connect('192.168.0.34:1337');
 
@@ -61,7 +61,7 @@ socket.on('receive_image', function(image) {
 });
 
 // When client (the receiver) receives a video
-socket.on('receive_video', function(video) {
+socket.on('receive_video', function(video, type) {
 
 	$('#vote').show();
 	$('#fine').text('Fun');
@@ -69,8 +69,13 @@ socket.on('receive_video', function(video) {
 	$('#role').text('You got something. How is it ?');
 	$('#under_state').text('Don\'t let the sharer waits too long.').show();
 	$('#tryAgain').hide();
-
-	show_youtube(video);
+	
+	if (type == 'youtube') {
+		show_youtube(video);
+		
+	} else if (type == 'vimeo') {
+		show_vimeo(video);
+	}
 });
 
 // Remove share box content
@@ -121,6 +126,11 @@ function show_youtube(video) {
 	$('#share_box_content').append('<iframe id="ytplayer" type="text/html" width="640" height="360" src="https://www.youtube.com/embed/'+getYoutubeId(video)+'" frameborder="0" allowfullscreen>');
 }
 
+// Display the shared Vimeo video
+function show_vimeo(video) {
+	$('#share_box_content').append('<iframe src="//player.vimeo.com/video/'+getVimeoId(video)+'" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>');
+}
+
 // When client likes the share
 function fine() {
 	socket.emit('fine');
@@ -141,23 +151,37 @@ function share_any() {
 		socket.emit('send_image', url);
 		share();
 		$('#urlshare').attr('placeholder', 'URL to the share');
+
 	} else if (isYoutube(url)) {
 		show_youtube(url);
-		socket.emit('send_video', url);
+		socket.emit('send_video', url, 'youtube');
 		share();
+
+	} else if (isVimeo(url)) {
+		show_vimeo(url);
+		socket.emit('send_video', url, 'vimeo');
+		share();
+
 	} else {
 		$('#urlshare').attr('placeholder', 'Invalid URL');
 	}
+	
 	$('#urlshare').val('');
 }
 
 // Check if the given url is an image
 function isImage(url) {
-	return(url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+	return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
 }
 
+// Check if url is a YouTube video
 function isYoutube(url) {
-	return(url.match(/watch\?v=([a-zA-Z0-9\-_]+)/) != null);
+	return (url.match(/watch\?v=([a-zA-Z0-9\-_]+)/) != null);
+}
+
+// Check if url is a Vimeo video
+function isVimeo(url) {
+	return (url.match(/http:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/) != null);
 }
 
 /*
@@ -180,6 +204,13 @@ function getYoutubeId(url) {
 	return id;
 }
 
+// Get Vimeo video Id
+function getVimeoId(url) {
+
+	var match = url.match(/http:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/);
+	return match[2];
+}
+
 /*****************
  ** DOM SECTION **
  *****************/
@@ -193,7 +224,7 @@ $('#imagefile').on('change', function(e) {
     var data = e.originalEvent.target.files[0];
 	console.log(data);
 	var reader = new FileReader();
-    reader.onload = function(evt) {
+        reader.onload = function(evt) {
 		show_image(evt.target.result);
 		socket.emit('send_image', evt.target.result);
 		share();

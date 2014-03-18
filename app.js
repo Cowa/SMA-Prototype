@@ -80,12 +80,12 @@ io.sockets.on('connection', function(socket) {
 	});
 	
 	// Client sender sends video
-	socket.on('send_video', function(video) {
+	socket.on('send_video', function(video, type) {
 	
-		var room = getRoom(socket);
+		var room  = getRoom(socket);
 		
 		if(isSender(socket)) {
-			socket.broadcast.to(room).emit('receive_video', video);
+			socket.broadcast.to(room).emit('receive_video', video, type);
 		} else { // cheating is bad, m'kay ?
 			socket.leave(room);
 			updateNbSharingClient();
