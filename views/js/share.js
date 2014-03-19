@@ -78,6 +78,24 @@ socket.on('receive_video', function(video, type) {
 	}
 });
 
+// Share done
+socket.on('share_done', function(url, type) {
+
+	share();
+	if (type == 'img') {
+		//show_image(url);
+	} else if (type == 'youtube') {
+		show_youtube(url);
+	} else if (type == 'vimeo') {
+		show_vimeo(url);
+	}
+});
+
+// Share is invalid
+socket.on('share_invalid', function() {
+	$('#urlshare').attr('placeholder', 'Invalid URL');
+});
+
 // Remove share box content
 socket.on('clear_room', function() {
 	clear_share();
@@ -145,43 +163,9 @@ function bad() {
 function share_any() {
 	
 	var url = $('#urlshare').val();
-	
-	if (isImage(url)) {
-		show_image(url);
-		socket.emit('send_image', url);
-		share();
-		$('#urlshare').attr('placeholder', 'URL to the share');
-
-	} else if (isYoutube(url)) {
-		show_youtube(url);
-		socket.emit('send_video', url, 'youtube');
-		share();
-
-	} else if (isVimeo(url)) {
-		show_vimeo(url);
-		socket.emit('send_video', url, 'vimeo');
-		share();
-
-	} else {
-		$('#urlshare').attr('placeholder', 'Invalid URL');
-	}
+	socket.emit('share_any', url);
 	
 	$('#urlshare').val('');
-}
-
-// Check if the given url is an image
-function isImage(url) {
-	return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
-}
-
-// Check if url is a YouTube video
-function isYoutube(url) {
-	return (url.match(/watch\?v=([a-zA-Z0-9\-_]+)/) != null);
-}
-
-// Check if url is a Vimeo video
-function isVimeo(url) {
-	return (url.match(/http:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/) != null);
 }
 
 /*

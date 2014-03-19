@@ -53,46 +53,53 @@ io.sockets.on('connection', function(socket) {
 	// Client wants to share
 	socket.on('new', function() {
 	
-		socket.leave('home');
-		joinRoom(socket);
-		updateNbSharingClient();
+		if (!wasInRoom(socket)) {
+			socket.leave('home');
+			joinRoom(socket);
+			updateNbSharingClient();
+		}
 	});
 	
 	// Client arrives on home page
 	socket.on('home', function() {
-	
-		socket.join('home');
-		socket.emit('nb', numberOfClient());
+
+		if (!wasInRoom(socket)) {
+			socket.join('home');
+			socket.emit('nb', numberOfClient());
+		}
 	});
 	
-	// Client sender sends image
+	// Client sender sends image by upload
 	socket.on('send_image', function(image) {
 	
 		var room = getRoom(socket);
 		
 		if(isSender(socket)) {
-			socket.broadcast.to(room).emit('receive_image', image);
-		} else { // cheating is bad, m'kay ?
-			socket.leave(room);
-			updateNbSharingClient();
-			updateRoomState(room);
+			send_image(socket, image);
 		}
 	});
 	
-	// Client sender sends video
-	socket.on('send_video', function(video, type) {
 	
-		var room  = getRoom(socket);
-		
+	// Client sender sends something from URL
+	socket.on('share_any', function(url) {
+
 		if(isSender(socket)) {
-			socket.broadcast.to(room).emit('receive_video', video, type);
-		} else { // cheating is bad, m'kay ?
-			socket.leave(room);
-			updateNbSharingClient();
-			updateRoomState(room);
+
+			if (isImage(url)) {
+				send_image(socket, url);
+
+			} else if (isYoutube(url)) {
+				send_video(socket, url, 'youtube');
+
+			} else if (isVimeo(url)) {
+				send_video(socket, url, 'youtube');
+
+			} else {
+				socket.emit('share_invalid');
+			}
 		}
 	});
-	
+
 	// Client receiver says 'Fun' to the share (switch role)
 	socket.on('fine', function() {
 		
@@ -269,4 +276,33 @@ function getRoomate(socket, room) {
 	}
 	
 	return roomate;
+}
+
+// Check if the given url is an image
+function isImage(url) {
+	return (url.match(/\.(jpeg|jpg|gif|png)$/) != null);
+}
+
+// Check if url is a YouTube video
+function isYoutube(url) {
+	return (url.match(/watch\?v=([a-zA-Z0-9\-_]+)/) != null);
+}
+
+// Check if url is a Vimeo video
+function isVimeo(url) {
+	return (url.match(/http:\/\/(www\.)?vimeo.com\/(\d+)($|\/)/) != null);
+}
+
+function send_video(socket, video, type) {
+
+	var room  = getRoom(socket);
+	socket.broadcast.to(room).emit('receive_video', video, type);
+	socket.emit('share_done', video, type);
+}
+
+function send_image(socket, image) {
+
+	var room  = getRoom(socket);
+	socket.broadcast.to(room).emit('receive_image', image);
+	socket.emit('share_done', image, 'img');
 }
