@@ -83,7 +83,7 @@ socket.on('share_done', function(url, type) {
 
 	share();
 	if (type == 'img') {
-		//show_image(url);
+		show_image(url);
 	} else if (type == 'youtube') {
 		show_youtube(url);
 	} else if (type == 'vimeo') {
@@ -209,7 +209,7 @@ $('#imagefile').on('change', function(e) {
 	console.log(data);
 	var reader = new FileReader();
         reader.onload = function(evt) {
-		show_image(evt.target.result);
+		//show_image(evt.target.result);
 		socket.emit('send_image', evt.target.result);
 		share();
     };
