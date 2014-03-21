@@ -33,7 +33,7 @@ Still in **very early development** but it works well (for the moment).
 
 Supported shares:
 
-- Uploaded & URL **images, photos and animated gifs**
+- URL **images, photos and animated gifs**
 
 - **YouTube videos**
 
@@ -43,18 +43,7 @@ In a near future:
 
 - Musics sharing from SoundCloud
 
-And then:
-
-- High security
-
 - Code optimization 
-
-Security
---------
-
-Currently the application is not at all secured for clients and servers.
-
-Do **NOT** use it on production servers. 
 
 A quick look
 ------------

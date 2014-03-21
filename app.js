@@ -69,17 +69,6 @@ io.sockets.on('connection', function(socket) {
 		}
 	});
 	
-	// Client sender sends image by upload
-	socket.on('send_image', function(image) {
-	
-		var room = getRoom(socket);
-		
-		if(isSender(socket)) {
-			send_image(socket, image);
-		}
-	});
-	
-	
 	// Client sender sends something from URL
 	socket.on('share_any', function(url) {
 

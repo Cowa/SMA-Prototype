@@ -203,17 +203,4 @@ $('#share_form').submit(function () {
     return false; // avoid page reloading
 });
 
-$('#imagefile').on('change', function(e) {
-
-    var data = e.originalEvent.target.files[0];
-	console.log(data);
-	var reader = new FileReader();
-        reader.onload = function(evt) {
-		//show_image(evt.target.result);
-		socket.emit('send_image', evt.target.result);
-		share();
-    };
-    reader.readAsDataURL(data);
-});
-
 $('#urlshare').tooltip();
