@@ -54,7 +54,6 @@ Please, don't forget this is a prototype.
 
 ![Sender_share](readme/sharer_share.png)
 
-![Sender_wait](readme/sharer_wait.png)
 
 
 ![Receiver_wait](readme/receiver_wait.png)
