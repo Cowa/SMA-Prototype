@@ -81,7 +81,7 @@ io.sockets.on('connection', function(socket) {
 				send_video(socket, url, 'youtube');
 
 			} else if (isVimeo(url)) {
-				send_video(socket, url, 'youtube');
+				send_video(socket, url, 'vimeo');
 
 			} else {
 				socket.emit('share_invalid');
