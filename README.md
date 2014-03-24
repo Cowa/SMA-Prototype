@@ -3,14 +3,14 @@ Share Me Anything
 
 *A web application social experiment*
 
-Project by Brice Thomas written in JavaScript with Node.js, 2014
+Project by **Brice Thomas** written in JavaScript with Node.js, 2014
 
 What is it ?
 ------------
 
 **A fun new way to communicate**
 
-*Share Me Anything* connects you with another **random** human connected.
+*Share Me Anything* connects you with another **random** connected human.
 
 Once in touch with someone, two different roles are given: a sender and a receiver.
 
@@ -18,11 +18,11 @@ The sender have to share an image, photo, music or video. Only one share at a ti
 
 Then the receiver receives the share and must vote: *'Fun'* or *'Bad'*.
 
-If it's *'Bad'*, it puts an end to the communication.
+If *'Bad'*, it puts an end to the communication.
 
-But if it's *'Fun'*, the communication goes on ! And roles are switched.
+But if *'Fun'*, the communication goes on ! And roles are switched.
 
-The sender becomes the receiver and the receiver becomes the sender.
+The sender becomes the receiver and vice versa.
 
 And another turn begin...
 
@@ -41,9 +41,14 @@ Supported shares:
 
 In a near future:
 
-- Musics sharing from SoundCloud
+- DailyMotion videos
 
-- Code optimization 
+- Musics sharing from SoundCloud (Spotify ? Deezer ?)
+
+- Code optimization
+
+- Better UI
+
 
 A quick look
 ------------
