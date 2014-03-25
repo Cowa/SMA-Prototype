@@ -5,6 +5,31 @@ Share Me Anything
 
 Project by **Brice Thomas** written in JavaScript with Node.js, 2014
 
+How to install ?
+----------------
+
+You'll need Node.js :
+
+[Node.js website](http://nodejs.org/)
+
+Clone the repo :
+
+```git clone https://github.com/Cowa/ShareMeAnything.git```
+
+Inside the repo, install dependencies :
+ 
+```npm install```
+
+How to configure ?
+------------------
+
+In ```app.js``` you can change the server's port (default 1337, but 8080 is more famous)
+
+Edit ```home.js``` and ```share.js``` (inside views/js) and modify the server's adress
+
+You can now start the server ```nodejs app.js```
+
+
 What is it ?
 ------------
 
