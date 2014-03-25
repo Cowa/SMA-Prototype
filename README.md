@@ -47,7 +47,15 @@ In a near future:
 
 - Code optimization
 
-- Better UI
+- Better UI (desktop)
+
+And finally:
+
+- Android native app
+
+- Universal mobile version (for those without native app)
+
+- iOS, Windows Mobile native app
 
 
 A quick look
