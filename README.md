@@ -1,9 +1,9 @@
-Share Me Anything
-=================
+Share Me Anything [Prototype]
+=============================
 
 *A web application social experiment*
 
-Project by **Brice Thomas** written in JavaScript with Node.js, 2014
+A prototype by **Brice Thomas** written in JavaScript with Node.js, 2014
 
 How to install ?
 ----------------
@@ -54,7 +54,9 @@ And another turn begin...
 Progress
 --------
 
-Still in **very early development** but it works well (for the moment).
+This. was. a prototype.
+
+Well, it means, no more work will be done here.
 
 Supported shares:
 
@@ -64,29 +66,17 @@ Supported shares:
 
 - **Vimeo videos**
 
-In a near future:
+Next ?
+------
 
-- DailyMotion videos
+I planned something quite new for the future.
 
-- Musics sharing from SoundCloud (Spotify ? Deezer ?)
-
-- Code optimization
-
-- Better UI (desktop)
-
-And finally:
-
-- Android native app
-
-- Universal mobile version (for those without native app)
-
-- iOS, Windows Mobile native app
-
+It will be focused on mobile devices, with the same idea.
 
 A quick look
 ------------
 
-Please, don't forget this is a prototype.
+Please, don't forget this was a prototype.
 
 ![Home](readme/home.png)
 
